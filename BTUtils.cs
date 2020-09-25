@@ -18,7 +18,7 @@ namespace PS3BluMote
             {
                 BluetoothClient cli = new BluetoothClient();
                 if (timeout != TimeSpan.Zero) cli.InquiryLength = timeout;
-                BluetoothDeviceInfo[] devs = cli.DiscoverDevices();
+                var devs = cli.DiscoverDevices().ToList();
                 foreach (BluetoothDeviceInfo dev in devs)
                 {
                     if (dev.DeviceName.ToLower().Contains("bd remote control"))
