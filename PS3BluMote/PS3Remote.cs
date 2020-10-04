@@ -33,11 +33,11 @@ using InTheHand.Net.Sockets;
 
 namespace PS3BluMote
 {
-    class PS3Remote
+    public class PS3Remote
     {
         public event EventHandler<EventArgs> BatteryLifeChanged;
-        public event EventHandler<ButtonData> ButtonDown;
-        public event EventHandler<ButtonData> ButtonReleased;
+        public event EventHandler<ButtonEventArgs> ButtonDown;
+        public event EventHandler<ButtonEventArgs> ButtonReleased;
         public event EventHandler<EventArgs> Connected;
         public event EventHandler<EventArgs> Disconnected;
         public event EventHandler<EventArgs> Hibernated;
@@ -276,7 +276,7 @@ namespace PS3BluMote
                 if ((InData.Data[10] == 0) || (InData.Data[4] == 255)) // button released
                 {
                     timerSleepButton.Stop();
-                    if (ButtonReleased != null && isButtonDown) ButtonReleased(this, new ButtonData(lastButton));
+                    if (ButtonReleased != null && isButtonDown) ButtonReleased(this, new ButtonEventArgs(lastButton));
 
                 }
                 else // button pressed
@@ -300,7 +300,7 @@ namespace PS3BluMote
                         lastButton = (Button)j;
                         isButtonDown = true;
 
-                        if (ButtonDown != null) ButtonDown(this, new ButtonData(lastButton));
+                        if (ButtonDown != null) ButtonDown(this, new ButtonEventArgs(lastButton));
                         if (lastButton == Button.Playstation) timerSleepButton.Start();
                         else timerSleepButton.Stop();
                     }                   
@@ -353,9 +353,9 @@ namespace PS3BluMote
 
                     if (SleepState == RemoteBtStates.Hibernated)
                     {
-                        if (Hibernated != null) Hibernated(this, new EventArgs());
+                        Hibernated?.Invoke(this, new EventArgs());
                     }
-                    else if (Connected != null) Connected(this, new EventArgs());
+                    else Connected?.Invoke(this, new EventArgs());
 
                     if (SleepState == RemoteBtStates.Awake && hibernationEnabled) timerHibernation.Start();
                     if (SleepState == RemoteBtStates.Hibernated && hibernationEnabled) RestoreDevicesInsertionSounds();
@@ -446,11 +446,11 @@ namespace PS3BluMote
             }
         }
 
-        public class ButtonData : EventArgs
+        public class ButtonEventArgs : EventArgs
         {
             public Button button;
 
-            public ButtonData(Button btn)
+            public ButtonEventArgs(Button btn)
             {
                 button = btn;
             }

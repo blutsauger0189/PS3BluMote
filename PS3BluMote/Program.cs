@@ -32,7 +32,7 @@ namespace PS3BluMote
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            SettingsForm frmSettings = new SettingsForm();
+            var frmSettings = new MouseSettingsForm();
 
             Application.Run();
 

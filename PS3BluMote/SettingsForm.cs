@@ -150,8 +150,8 @@ namespace PS3BluMote
                 remote = new PS3Remote(int.Parse(txtVendorId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber), int.Parse(txtProductId.Text.Remove(0, 2), System.Globalization.NumberStyles.HexNumber));
 
                 remote.BatteryLifeChanged += new EventHandler<EventArgs>(remote_BatteryLifeChanged);
-                remote.ButtonDown += new EventHandler<PS3Remote.ButtonData>(remote_ButtonDown);
-                remote.ButtonReleased += new EventHandler<PS3Remote.ButtonData>(remote_ButtonReleased);
+                remote.ButtonDown += new EventHandler<PS3Remote.ButtonEventArgs>(remote_ButtonDown);
+                remote.ButtonReleased += new EventHandler<PS3Remote.ButtonEventArgs>(remote_ButtonReleased);
 
                 remote.Connected += new EventHandler<EventArgs>(remote_Connected);
                 remote.Disconnected += new EventHandler<EventArgs>(remote_Disconnected);
@@ -398,7 +398,7 @@ namespace PS3BluMote
             if (DebugLog.isLogging) DebugLog.write("Battery life: " + remote.getBatteryLife.ToString() + "%");
         }
 
-        private void remote_ButtonDown(object sender, PS3Remote.ButtonData e)
+        private void remote_ButtonDown(object sender, PS3Remote.ButtonEventArgs e)
         {
             if (DebugLog.isLogging) DebugLog.write("Button down: " + e.button.ToString());
 
@@ -420,7 +420,7 @@ namespace PS3BluMote
             if (DebugLog.isLogging) DebugLog.write("Keys down: { " + String.Join(",", mapping.keysMapped.ToArray()) + " }");
         }
 
-        private void remote_ButtonReleased(object sender, PS3Remote.ButtonData e)
+        private void remote_ButtonReleased(object sender, PS3Remote.ButtonEventArgs e)
         {
             if (DebugLog.isLogging) DebugLog.write("Button released: " + e.button.ToString());
 
